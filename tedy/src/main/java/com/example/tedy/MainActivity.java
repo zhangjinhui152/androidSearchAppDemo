@@ -1,6 +1,9 @@
 package com.example.tedy;
 
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+
 import androidx.activity.result.ActivityResultLauncher;
 
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -26,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -186,7 +190,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.close_Bth).setOnClickListener(v->{
-            settingBlock.animate().setDuration(400).scaleX(0).scaleY(0).setInterpolator(new DecelerateInterpolator()).start();
+            settingBlock.animate().setDuration(400).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
+                float factor = (float) 0.95;
+                float res = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
+                return  res;
+            }).start();
         });
 
 
@@ -205,10 +213,18 @@ public class MainActivity extends AppCompatActivity {
     public void scaleCard(){
 
         if (!flip){
-            settingBlock.animate().setDuration(400).scaleX(1).scaleY(1).setInterpolator(new BounceInterpolator()).start();
+            settingBlock.animate().setDuration(800).scaleX(1).scaleY(1).setInterpolator((Interpolator) x -> {
+                float factor = (float) 0.4;
+                float v = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
+                return  v;
+            }).start();
         }
         else{
-            settingBlock.animate().setDuration(400).scaleX(0).scaleY(0).setInterpolator(new DecelerateInterpolator()).start();
+            settingBlock.animate().setDuration(800).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
+                float factor = (float) 0.4;
+                float v = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
+                return  v;
+            }).start();
         }
         flip = !flip;
 
