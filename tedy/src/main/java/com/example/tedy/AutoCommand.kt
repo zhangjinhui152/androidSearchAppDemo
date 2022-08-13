@@ -8,5 +8,6 @@ data class AutoCommand(
     var y: Float,
     var id: String,
     var editText: String,
+    var delay: Long,
 
 )

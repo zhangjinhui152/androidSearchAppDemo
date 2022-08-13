@@ -2,15 +2,17 @@ package com.example.tedy
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
-
 import android.graphics.Path
 import android.os.Bundle
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.Toast
+import com.example.tedy.util.FileGet
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.util.*
 
 
 class MyAccessbilityService : AccessibilityService() {
@@ -79,6 +81,7 @@ class MyAccessbilityService : AccessibilityService() {
 
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        Toast.makeText(FileGet.getMac(), "触发AccessibilityEvent", Toast.LENGTH_LONG).show();
         //设置监听的包名
         val pkgArray = arrayOf(pkgName)
         this.serviceInfo.packageNames = pkgArray
@@ -86,14 +89,17 @@ class MyAccessbilityService : AccessibilityService() {
         Log.d("TAG", "event?.eventType: ${serviceInfo.packageNames[0]}")
         if (isOpenActive){
             isOpenActive = false
+            Toast.makeText(FileGet.getMac(), "触发isOpenActive", Toast.LENGTH_LONG).show();
+            parserJson(jsonStr)
             Log.d("TAG", "event?.eventType: ${serviceInfo.packageNames[0]}")
-            //触发了TYPE_WINDOW_STATE_CHANGED的事件
+//            触发了TYPE_WINDOW_STATE_CHANGED的事件
             when(event?.eventType){
                 AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                     //解析JSON
-                    parserJson(jsonStr)
+
                 }
             }
+
         }
 
 
@@ -105,21 +111,34 @@ class MyAccessbilityService : AccessibilityService() {
     }
 
     fun parserJson(jsonStr: String){
+        Toast.makeText(FileGet.getMac(), "触发parserJson", Toast.LENGTH_LONG).show();
         //转换JSOP成class
         val listForAcom = convertJsonToClass(jsonStr)
         //遍历判断属于什么类型 就执行对应的指令
         listForAcom?.forEach {
             Log.d("TAG", "parserJson: it${it.type}")
-            when(it.type){
-                Command_Type.Click.toString() -> {
-                    Log.d("TAG", "parserJson: it${it.type}")
-                    JsonPareseClick(it.x,it.y)
-                }
-                Command_Type.IdNode.toString() -> {
-                    Log.d("TAG", "parserJson: it${it.type}")
-                    JsonParseSelectNode(it.id,it.editText)
+
+            val task: TimerTask = object : TimerTask() {
+                override fun run() {
+                    when(it.type){
+                        Command_Type.Click.toString() -> {
+                            Toast.makeText(FileGet.getMac(), "触发ClickparserJson", Toast.LENGTH_LONG).show();
+                            Log.d("TAG", "parserJson: it${it.type}")
+                            JsonPareseClick(it.x,it.y)
+                        }
+                        Command_Type.IdNode.toString() -> {
+                            Toast.makeText(FileGet.getMac(), "触发IdNodeparserJson", Toast.LENGTH_LONG).show();
+                            Log.d("TAG", "parserJson: it${it.type}")
+                            JsonParseSelectNode(it.id,it.editText)
+                        }
+                    }
                 }
             }
+            val timer = Timer()
+            timer.schedule(task, it.delay)
+
+
+
         }
 
     }

@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -53,6 +54,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean flip = true;
 //    private boolean flip2 = true;
     private MaterialCardView settingBlock ;
+    Search_RecyclerViewAdapter search_recyclerViewAdapter;
+    private List<SearchBlock> searchBlocks;
+
+
 
 
     public void setCurrSearchBlock(SearchBlock currSearchBlock) {
@@ -93,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SearchMethod searchMethod;
     private ImageView showPanle;
+    public ImageView setting;
+    private String fileName;
 
 
 
@@ -100,6 +113,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        File filesDir = this.getFilesDir();
+        Log.d("filesDir", "onCreate: "+filesDir);
+
+        fileName = filesDir + "/data.ser";
+
+
+        try {
+
+            FileInputStream fileOut1 = new FileInputStream(fileName);
+            fileOut1 = fileOut1;
+            ObjectInputStream out = new ObjectInputStream(fileOut1);
+            searchBlocks = (List<SearchBlock>)out.readObject();
+            fileOut1.close();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            searchBlocks = new ArrayList<>();
+            Resources resources = getResources();
+            Drawable drawable = resources.getDrawable(R.drawable.home128,null);
+            Drawable drawable2 = resources.getDrawable(R.drawable.add,null);
+            Bitmap bitmap = My_AndroidUtil.drawableToBitmap(drawable);
+            Bitmap bitmap2 = My_AndroidUtil.drawableToBitmap(drawable2);
+
+
+            searchBlocks.add(new SearchBlock("Base",null,null,My_AndroidUtil.bitmapToByte(bitmap), SearchType.BASE));
+            searchBlocks.add(new SearchBlock("Base",null,null,My_AndroidUtil.bitmapToByte(bitmap2), SearchType.ADD));
+
+        }
+
 
         setContentView(R.layout.activity_main);
         My_AndroidUtil.init(this, findViewById(R.id.resultList));
@@ -110,17 +153,20 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView v2 = findViewById(R.id.searchMode);
         v2.setLayoutManager(new GridLayoutManager(this,8));
-        List<SearchBlock> searchBlocks = new ArrayList<>();
-        searchBlocks.add(new SearchBlock("Base",null,null,null, SearchType.BASE));
-        searchBlocks.add(new SearchBlock("Base",null,null,null, SearchType.ADD));
 
-        Search_RecyclerViewAdapter search_recyclerViewAdapter = new Search_RecyclerViewAdapter(searchBlocks,this,My_AndroidUtil.getDbManger());
-        showPanle = findViewById(R.id.showPanle);
-        //    private Context context;
+
+
+
+        search_recyclerViewAdapter = new Search_RecyclerViewAdapter(searchBlocks,this,My_AndroidUtil.getDbManger());
+
+
+
         TextInputEditText searchInput = findViewById(R.id.search_input);
         TextInputLayout searchInputL = findViewById(R.id.search_input_l);
 
 
+
+        showPanle = findViewById(R.id.showPanle);
         search_recyclerViewAdapter.setSearchButtom(showPanle);
         search_recyclerViewAdapter.setSearchInput(searchInput);
         search_recyclerViewAdapter.setSearchInput_L(searchInputL);
@@ -131,9 +177,86 @@ public class MainActivity extends AppCompatActivity {
         FileGet.setMac(this);
 
 
-        settingBlock = findViewById(R.id.settingBlock);
-        TextInputEditText searchName = findViewById(R.id.SearchName);
+        readSettingInput();
 
+        findViewById(R.id.close_Bth).setOnClickListener(v->{
+            settingBlock.animate().setDuration(400).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
+                float factor = (float) 0.95;
+                float res = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
+                return  res;
+            }).start();
+        });
+        setting = findViewById(R.id.settingSet);
+        Log.d("filesDir", "onCreate: "+setting);
+
+
+
+
+
+
+
+
+
+    }
+
+    //读取/修改当前的块设置
+    public void WriteSettingInput()
+    {
+        TextInputEditText searchName = findViewById(R.id.SearchName);
+        TextInputEditText input_JsonStr = findViewById(R.id.input_JsonStr);
+        TextInputEditText input_urlScheme = findViewById(R.id.input_urlScheme);
+        TextInputEditText input_type = findViewById(R.id.type);
+
+        searchName.setText(currSearchBlock.getSearchName());
+        input_JsonStr.setText(currSearchBlock.getJsonStr());
+        input_urlScheme.setText(currSearchBlock.getUrlScheme());
+        SearchType oldType = currSearchBlock.getType();
+        if (oldType == SearchType.ACCESSIBILITY){
+            input_type.setText("A");
+        }
+        else if (oldType == SearchType.URL_SCHEME) {
+            input_type.setText("U");
+        }
+
+
+        findViewById(R.id.addSearchBlock).setOnClickListener(v->{
+            SearchType type = null;
+            SearchMethod searchMethod = null;
+
+            if (input_type.getText().toString().equals("U")){
+                type = SearchType.URL_SCHEME;
+                searchMethod = new SearchMethodForUrlScheme();
+            }
+            else if (input_type.getText().toString().equals("A")) {
+                type = SearchType.ACCESSIBILITY;
+                searchMethod = new SearchMethodForAccessibility();
+            }
+            SearchBlock searchBlock = new SearchBlock(searchName.getText().toString(),
+                    input_urlScheme.getText().toString(),
+                    input_JsonStr.getText().toString(),
+                    type
+            );
+            searchBlock.setSearchMethod(searchMethod);
+            if (FileGet.getBm() != null){
+                searchBlock.setApkIcon(My_AndroidUtil.bitmapToByte(FileGet.getBm()));
+
+            }
+            Log.d("FuckBug", "onCreate: "+input_JsonStr.getText().toString());
+
+            search_recyclerViewAdapter.remove(currSearchBlock);
+            search_recyclerViewAdapter.add(searchBlock);
+            scaleCard();
+        });
+        findViewById(R.id.remove_Bth).setOnClickListener(vd->{
+            search_recyclerViewAdapter.remove(currSearchBlock);
+            scaleCard();
+        });
+    }
+
+    public void readSettingInput() {
+        settingBlock = findViewById(R.id.settingBlock);
+
+        TextInputEditText searchName = findViewById(R.id.SearchName);
         TextInputEditText input_JsonStr = findViewById(R.id.input_JsonStr);
         TextInputEditText input_urlScheme = findViewById(R.id.input_urlScheme);
         TextInputEditText input_type = findViewById(R.id.type);
@@ -168,6 +291,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("FuckBug", "onCreate: "+input_JsonStr.getText().toString());
             search_recyclerViewAdapter.add(searchBlock);
             scaleCard();
+            findViewById(R.id.remove_Bth).setOnClickListener(vd->{
+//                search_recyclerViewAdapter.remove(currSearchBlock);
+            });
         }
         catch (Exception e){
             Toast.makeText(MainActivity.this, "不能为空或者类型不对", Toast.LENGTH_LONG).show();
@@ -188,22 +314,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-
-        findViewById(R.id.close_Bth).setOnClickListener(v->{
-            settingBlock.animate().setDuration(400).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
-                float factor = (float) 0.95;
-                float res = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
-                return  res;
-            }).start();
-        });
-
-
-
-
-
-
-
-
     }
 
     private void setSearchMethod(SerchMethodForBase serchMethodForBase) {
@@ -278,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
 
         contentView = findViewById(R.id.materialCardView2);
 //        loadingView = findViewById(R.id.text2);
-        ImageButton imageButton = findViewById(R.id.showPanle);
+        ImageView imageButton = findViewById(R.id.showPanle);
 //        int count = 2;
 
         imageButton.setOnClickListener(v -> {
@@ -291,15 +401,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void foldSearchBlockCard() {
+        Log.d("flip", "foldSearchBlockCard: "+flip);
         if (flip) {
-
             shortAnimationDuration = getResources().getInteger(
                     android.R.integer.config_shortAnimTime);
             crossfade();
-            flip = !flip;
+            flip = false;
             contentView.setVisibility(View.VISIBLE);
         } else {
-            flip = !flip;
+            flip = true;
             contentView.setVisibility(View.GONE);
 
         }
@@ -327,7 +437,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(search_recyclerViewAdapter.getData());
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
 
+        }
 
+        super.onStop();
+    }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(search_recyclerViewAdapter.getData());
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        super.onDestroy();
+    }
 }

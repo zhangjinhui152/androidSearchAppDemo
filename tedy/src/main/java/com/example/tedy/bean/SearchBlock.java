@@ -3,7 +3,10 @@ package com.example.tedy.bean;
 
 import com.example.tedy.serchMethod.SearchMethod;
 
-public class SearchBlock {
+import java.io.Serializable;
+
+
+public class SearchBlock implements Serializable {
     private String searchName;
     private String urlScheme;
     private Float x;

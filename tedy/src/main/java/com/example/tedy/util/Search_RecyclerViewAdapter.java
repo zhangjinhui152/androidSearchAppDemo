@@ -23,6 +23,10 @@ import java.util.List;
 
 public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_RecyclerViewAdapter.My_ViewHolder> {
 
+    public List<SearchBlock> getData() {
+        return data;
+    }
+
     private List<SearchBlock> data;
     private Context context;
     DBManger dbManger;
@@ -65,23 +69,12 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
     }
 
     public void add(SearchBlock block){
-
         this.data.add(block);
         notifyItemInserted(this.data.size());
     }
-
-    public void pop() {
-        data.remove(data.size() - 1);
-    }
-
-    public void removeAll() {
-        notifyItemRangeRemoved(0,data.size());
-        data.clear();
-    }
-
-    public void cloneList(List<SearchBlock> list) {
-        notifyItemInserted(data.size());
-        data.addAll(list);
+    public void remove(SearchBlock oldBlock){
+        this.data.remove(oldBlock);
+        notifyItemRemoved(this.data.size());
     }
 
 
@@ -125,15 +118,13 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
                 switch (sb.getType()){
                     case BASE:
                         Log.d("BASE", "BASE: ");
-//                        setSearchButtomImage();
-
+                        setSearchButtomImage();
                         break;
                     case URL_SCHEME:
                         Log.d("URL_SCHEME", "URL_SCHEME: ");
                         setSearchButtomImage();
                         FileGet.getMac().setCurrSearchBlock(sb);
 //                        searchInput.setText(sb.getSearchName());
-
                         break;
                     case ACCESSIBILITY:
                         Log.d("ACCESSIBILITY", "ACCESSIBILITY: ");
@@ -156,7 +147,15 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
 
 
             });
+            apkIcon.setOnLongClickListener(v -> {
+                Log.d("TAG", "My_ViewHolder: ");
+                FileGet.getMac().scaleCard();
+                FileGet.getMac().foldSearchBlockCard2();
+                FileGet.getMac().setCurrSearchBlock(sb);
+                FileGet.getMac().WriteSettingInput();
 
+                return true;
+            });
 
         }
 

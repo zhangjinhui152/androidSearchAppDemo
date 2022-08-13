@@ -36,21 +36,21 @@
 
             <ImageButton
                 android:id="@+id/showPanle"
+                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/add"
+                android:background="@drawable/home128"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
+                android:scaleType="fitXY"
 
-
-                tools:ignore="SpeakableTextPresentCheck" />
+                />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_input_l"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4.5"
+                android:layout_weight="4"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +63,8 @@
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageButton
+            <ImageView
+                android:id="@+id/settingSet"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -179,25 +180,39 @@
 
                 <ImageButton
                     android:id="@+id/setImageButtom"
-                    android:layout_width="50dp"
+
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="50dp"
-                    android:background="@drawable/add"
+                    android:background="@drawable/carame94"
                     />
                 <ImageButton
-                    android:layout_marginLeft="20dp"
+
                     android:id="@+id/addSearchBlock"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="50dp"
                     android:background="@drawable/add"
                     >
 
+
                 </ImageButton>
                 <Button
                     android:id="@+id/close_Bth"
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height=  "50dp"
+                    android:textAlignment="center"
+                    android:textSize="10dp"
                     android:text="关闭"/>
+                <Button
+                    android:id="@+id/remove_Bth"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height=  "50dp"
+                    android:textAlignment="center"
+                    android:textSize="10dp"
+                    android:text="删除"/>
             </LinearLayout>
 
 
