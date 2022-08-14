@@ -6,7 +6,7 @@
     android:description="@string/app_name"
 
 
-    android:packageNames="com.example.autoc"
+    android:packageNames="com.example.tedy"
 
 
     android:accessibilityEventTypes="typeViewClicked|typeViewFocused|typeWindowStateChanged"
@@ -14,10 +14,10 @@
     android:accessibilityFeedbackType="feedbackAllMask"
 
 
-    android:notificationTimeout="100"
+    android:notificationTimeout="1000"
 
 
-    android:settingsActivity="com.example.autoc.MainActivity"
+    android:settingsActivity="com.example.tedy.MainActivity"
 
 
     android:accessibilityFlags="flagRetrieveInteractiveWindows|flagReportViewIds|flagIncludeNotImportantViews|flagRequestFilterKeyEvents"
@@ -29,4 +29,7 @@
     android:canRetrieveWindowContent="true"
 
 
-    android:canPerformGestures="true"/>
+    android:canPerformGestures="true"
+
+
+    />

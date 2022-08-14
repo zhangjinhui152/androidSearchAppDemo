@@ -54,6 +54,7 @@ class MyAccessbilityService : AccessibilityService() {
         fun setJsonAndPkgName(jsonStr: String,pkgName: String){
             this.jsonStr = jsonStr
             this.pkgName = pkgName
+
         }
 
 
@@ -72,20 +73,18 @@ class MyAccessbilityService : AccessibilityService() {
 
     }
 
-
+    fun setJsonAndPkgName2(jsonStr: String,pkgName: String){
+        serviceInfo.packageNames[0] = pkgName
+    }
     override fun onServiceConnected() {
         super.onServiceConnected()
         isServiceCreated = true
+        FileGet.setAc(this)
+        serviceInfo.packageNames[0] = "1"
+
     }
 
-
-
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        Toast.makeText(FileGet.getMac(), "触发AccessibilityEvent", Toast.LENGTH_LONG).show();
-        //设置监听的包名
-        val pkgArray = arrayOf(pkgName)
-        this.serviceInfo.packageNames = pkgArray
-
         Log.d("TAG", "event?.eventType: ${serviceInfo.packageNames[0]}")
         if (isOpenActive){
             isOpenActive = false
@@ -122,12 +121,12 @@ class MyAccessbilityService : AccessibilityService() {
                 override fun run() {
                     when(it.type){
                         Command_Type.Click.toString() -> {
-                            Toast.makeText(FileGet.getMac(), "触发ClickparserJson", Toast.LENGTH_LONG).show();
+
                             Log.d("TAG", "parserJson: it${it.type}")
                             JsonPareseClick(it.x,it.y)
                         }
                         Command_Type.IdNode.toString() -> {
-                            Toast.makeText(FileGet.getMac(), "触发IdNodeparserJson", Toast.LENGTH_LONG).show();
+
                             Log.d("TAG", "parserJson: it${it.type}")
                             JsonParseSelectNode(it.id,it.editText)
                         }
@@ -155,7 +154,7 @@ class MyAccessbilityService : AccessibilityService() {
             Log.d("rootInActiveWindow", "windows: ${windows.size} ")
             for(ws in windows){
                 val root = ws.root
-                val listForAcNode = root.findAccessibilityNodeInfosByViewId("${pkgName}:id/${id}")
+                val listForAcNode = root.findAccessibilityNodeInfosByViewId("com.example.autoc:id/${id}")
                 if (listForAcNode.size != 0){
                     inputNode = listForAcNode[0]
                     nodeFlag = true

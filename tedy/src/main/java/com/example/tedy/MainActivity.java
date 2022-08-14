@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 
+import android.app.ApplicationExitInfo;
 import android.content.Context;
 import android.content.Intent;
 
@@ -28,6 +30,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -193,10 +196,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void setPkgname(String pkgname) {
+        MyAccessbilityService myAc = FileGet.getMyAc();
+
+        AccessibilityServiceInfo accessibilityServiceInfo = myAc.getServiceInfo();
+        accessibilityServiceInfo.packageNames = new String[]{pkgname};
+        myAc.setServiceInfo(accessibilityServiceInfo);
 
 
-
-
+        Log.d("1111", "setPkgname: "+myAc.getServiceInfo().packageNames[0]);
     }
 
     //读取/修改当前的块设置
@@ -348,7 +358,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
                     Log.e("MainActivity", "onKey: 按下回车键");
-                    currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
+                    if(currSearchBlock != null && currSearchBlock.getSearchMethod() != null){
+                        currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
+                    }
+
                     return true;
                 }
                 return false;

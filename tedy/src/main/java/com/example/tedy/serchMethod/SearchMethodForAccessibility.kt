@@ -1,7 +1,6 @@
 package com.example.tedy.serchMethod
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.example.tedy.MyAccessbilityService
@@ -15,15 +14,20 @@ class SearchMethodForAccessibility : SearchMethod {
         MyAccessbilityService.isOpenActive = true
         val currSearchBlock = FileGet.getMac()?.currSearchBlock
 
-//        val jsonStr = """
-//                [{"type":"Click","x":26.0,"y":26.0,"id":"inp1","editText":"喻志强"},{"type":"IdNode","x":26.0,"y":26.0,"id":"inp1","editText":"喻志强"}]
-//            """.trimIndent()
+
         var trimIndent = currSearchBlock?.jsonStr.toString().trimIndent().replace("%s",s.toString());
 
-        MyAccessbilityService.setJsonAndPkgName(trimIndent,currSearchBlock?.searchName.toString())
-        Log.d("search", "search: IS SearchMethodForAccessibility ${currSearchBlock?.searchName.toString()}")
 
+        FileGet.getMac()?.setPkgname(currSearchBlock?.searchName.toString())
+        MyAccessbilityService.setJsonAndPkgName(trimIndent,currSearchBlock?.searchName.toString())
+
+
+
+
+
+        Log.d("search", "search: IS FileGet.getAc( ${FileGet.getAc()?.serviceInfo?.packageNames?.get(0)}")
         Log.d("search", "search: IS SearchMethodForAccessibility${currSearchBlock?.jsonStr.toString()}")
+        Log.d("search", "search: IS SearchMethodForAccessibility${FileGet.getAc()}}")
 
         My_AndroidUtil.doStartApplicationWithPackageName(context, currSearchBlock?.searchName);
 

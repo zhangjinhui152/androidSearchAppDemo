@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tedy.MainActivity
+import com.example.tedy.MyAccessbilityService
 
 
 @SuppressLint("StaticFieldLeak")
@@ -23,6 +24,18 @@ object FileGet : AppCompatActivity() {
     var ib : ImageButton? = null
     @JvmStatic
     var bm : Bitmap? = null
+
+    @JvmStatic
+    var myAc : MyAccessbilityService? = null
+
+    fun getAc() : MyAccessbilityService? {
+        return myAc
+    }
+    fun setAc(ac : MyAccessbilityService){
+        myAc = ac
+
+    }
+
 
     @JvmStatic
     fun getFile( ac : MainActivity){
