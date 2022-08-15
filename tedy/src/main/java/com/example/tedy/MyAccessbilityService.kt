@@ -103,30 +103,17 @@ class MyAccessbilityService : AccessibilityService() {
                 }
 
             }
-//            if (rootInActiveWindow != null) {
-//                var listForAcNode =
-//                    rootInActiveWindow.findAccessibilityNodeInfosByViewId("${pkgName.trimIndent()}:id/${id}")
-//                if (listForAcNode.size != 0){
-//                    Log.d("listForAcNode", "JsonParseSelectNode:${listForAcNode.size} ")
-//                    inputNode = listForAcNode[0]
-//                    nodeFlag = true
-//                    for (node in listForAcNode){
-//                        Log.d("TAG", "JsonParseSelectNode: ${node.toString()} ")
-//                    }
-//                    Log.d("TAG", "JsonParseSelectNode: ${listForAcNode.size}")
-//
-//                }
-//            }
+
             if (nodeFlag){
                 Log.d("TAG", "JsonParseSelectNode: YES!!!!!!!!!!!${inputNode?.toString()}!!!!!!!!!!!!!")
 
                 var data = Bundle()
-
+//                data.putCharSequence("android:text","2222222")
                 data?.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE," ${editText}");
                 inputNode?.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
 
                 inputNode?.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,data)
-
+//                inputNode?.text = "FUCK"
                 Log.d("TAG", "JsonParseSelectNode: YES!!!!!!!!!!!${inputNode?.text}!!!!!!!!!!!!!")
             }
 
@@ -137,7 +124,7 @@ class MyAccessbilityService : AccessibilityService() {
         }
 
 
-
+    }
 
     fun JsonPareseClick(x:Float = 0f,y :Float = 0f){
         Log.d("DoubleClick", "onAccessibilityEvent: ")
@@ -159,4 +146,4 @@ class MyAccessbilityService : AccessibilityService() {
 
 
 
-}}
+}
