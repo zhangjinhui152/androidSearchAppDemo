@@ -15,9 +15,9 @@ class SearchMethodForAccessibility : SearchMethod {
         val currSearchBlock = FileGet.getMac()?.currSearchBlock
 
 
-        var trimIndent = currSearchBlock?.jsonStr.toString().trimIndent().replace("%s",s.toString());
 
 
+        var trimIndent = currSearchBlock?.jsonStr.toString().trimIndent().replace("%s",s.toString())
         FileGet.getMac()?.setPkgname(currSearchBlock?.searchName.toString())
         MyAccessbilityService.setJsonAndPkgName(trimIndent,currSearchBlock?.searchName.toString())
 

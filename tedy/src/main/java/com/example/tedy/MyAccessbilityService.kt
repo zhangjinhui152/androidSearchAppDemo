@@ -152,18 +152,23 @@ class MyAccessbilityService : AccessibilityService() {
         }
         else{
             Log.d("rootInActiveWindow", "windows: ${windows.size} ")
+
             for(ws in windows){
                 val root = ws.root
-                val listForAcNode = root.findAccessibilityNodeInfosByViewId("com.example.autoc:id/${id}")
+                Log.d("rootInActiveWindow", "windows: ${root.contentDescription} ")
+                val listForAcNode = root.findAccessibilityNodeInfosByViewId("${pkgName.trimIndent()}:id/${id}")
                 if (listForAcNode.size != 0){
+                    Log.d("listForAcNode", "JsonParseSelectNode:${listForAcNode.size} ")
                     inputNode = listForAcNode[0]
                     nodeFlag = true
-
-//                    for (node in listForAcNode){
-//                        Log.d("TAG", "JsonParseSelectNode: ${node.toString()} ")
-//                    }
+                    for (node in listForAcNode){
+                        Log.d("TAG", "JsonParseSelectNode: ${node.toString()} ")
+                    }
                     Log.d("TAG", "JsonParseSelectNode: ${listForAcNode.size}")
                     break
+                }
+                else{
+                    continue
                 }
 
             }
