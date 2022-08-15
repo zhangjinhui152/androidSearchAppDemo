@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -353,20 +354,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void listenInput(TextInputEditText searchInput) {
         Context context = this;
-        searchInput.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-                    Log.e("MainActivity", "onKey: 按下回车键");
-                    if(currSearchBlock != null && currSearchBlock.getSearchMethod() != null){
-                        currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-        });
+//        searchInput.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+//                    Log.e("MainActivity", "onKey: 按下回车键");
+//                    if(currSearchBlock != null && currSearchBlock.getSearchMethod() != null){
+//                        currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
+//                    }
+//
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//        searchInput.setOnEditorActionListener(new AppCompatEditText.OnEditorActionListener() {
+//            @Override
+//
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                /** 关于编辑器动作 输入法动作发送,输入法动作完成, */
+//                if (actionId == EditorInfo.IME_ACTION_SEND
+//                        || actionId == EditorInfo.IME_ACTION_DONE
+//                        || (event != null) && KeyEvent.KEYCODE_ENTER
+//                        == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction()) {
+//                    Log.w("error", "onEditorAction: 回车键");
+//                }
+//                //返回false以上的操作会执行两次，因为onEditorAction方法接受了false会表示尚未执行
+//                //修改 return true,则回车之响应一次
+//                return true ;
+//            }
+//        });
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -387,8 +404,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    Log.d("TAG", "onEditorAction: ");
-
+                    Log.w("TAG", "onEditorAction:回车键 ");
+                    if(currSearchBlock != null && currSearchBlock.getSearchMethod() != null){
+                        currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
+                    }
                 }
                 return false;
             }
