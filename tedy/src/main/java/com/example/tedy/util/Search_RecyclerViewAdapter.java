@@ -138,6 +138,7 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
                         break;
                     case ADD:
                         Log.d("ADD", "add: ");
+
 //                        add(new SearchBlock("Base",null,null,null, SearchType.ADD));
                         FileGet.getSettingBlock().scaleCard();
                         FileGet.getMac().foldSearchBlockCard2();

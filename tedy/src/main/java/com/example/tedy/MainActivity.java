@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         search_recyclerViewAdapter = new Search_RecyclerViewAdapter(searchBlocks,this,My_AndroidUtil.getDbManger());
-
+        FileGet.getSettingBlock().set_Search_recyclerViewAdapter(search_recyclerViewAdapter);
 
 
         TextInputEditText searchInput = findViewById(R.id.search_input);

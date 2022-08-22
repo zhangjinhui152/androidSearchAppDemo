@@ -31,7 +31,7 @@ import kotlin.math.sin
 
 
 class SettingBlock : Fragment() {
-    var search_recyclerViewAdapter: Search_RecyclerViewAdapter? = null
+    private var search_recyclerViewAdapter: Search_RecyclerViewAdapter? = null
 
     var currSearchBlock : SearchBlock? = null
     private var settingBlock: MaterialCardView? = null
@@ -44,10 +44,16 @@ class SettingBlock : Fragment() {
 
 
     }
+    fun set_Search_recyclerViewAdapter(se : Search_RecyclerViewAdapter){
+
+        if (search_recyclerViewAdapter == null){
+            search_recyclerViewAdapter = se
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        search_recyclerViewAdapter =  FileGet.getMac()?.search_recyclerViewAdapter
+
         Log.d("varIF Exisy@", "onViewCreated$search_recyclerViewAdapter: ")
         FileGet.macView = view
 
