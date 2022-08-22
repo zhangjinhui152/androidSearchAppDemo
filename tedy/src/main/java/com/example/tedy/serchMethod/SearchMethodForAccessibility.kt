@@ -16,7 +16,7 @@ class SearchMethodForAccessibility : SearchMethod {
 
 
         MyAccessbilityService.isOpenActive = true
-        val currSearchBlock = FileGet.getMac()?.currSearchBlock
+        val currSearchBlock = FileGet.settingBlock?.currSearchBlock
 
 
         var trimIndent = currSearchBlock?.jsonStr.toString().trimIndent().replace("%s",s.toString())
@@ -28,9 +28,9 @@ class SearchMethodForAccessibility : SearchMethod {
         Log.d("search", "search: IS SearchMethodForAccessibility${currSearchBlock?.jsonStr.toString()}")
 
 
+
         parserJson(jsonStr = trimIndent)
         My_AndroidUtil.doStartApplicationWithPackageName(context, currSearchBlock?.searchName);
-
     }
 
 
@@ -50,12 +50,16 @@ class SearchMethodForAccessibility : SearchMethod {
                             Log.d("TAG", "parserJson: it${it.type}")
                             FileGet.getAc()?.onAccessibilityEvent(AccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT))
                             FileGet.getAc()?.callAccessibilityServiceCommand { FileGet.getAc()?.JsonPareseClick(it.x,it.y) }
+
                         }
                         MyAccessbilityService.Companion.Command_Type.IdNode.toString() -> {
 
                             Log.d("TAG", "parserJson: it${it.type}")
+                            My_AndroidUtil.doStartApplicationWithPackageName(FileGet.getMac(), FileGet.getMac()?.currSearchBlock?.searchName);
                             FileGet.getAc()?.onAccessibilityEvent(AccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT))
+
                             FileGet.getAc()?.callAccessibilityServiceCommand { FileGet.getAc()?.JsonParseSelectNode(it.id,it.editText) }
+
                         }
                     }
                 }
