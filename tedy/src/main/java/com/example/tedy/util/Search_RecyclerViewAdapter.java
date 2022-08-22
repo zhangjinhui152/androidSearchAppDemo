@@ -123,12 +123,12 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
                     case URL_SCHEME:
                         Log.d("URL_SCHEME", "URL_SCHEME: ");
                         setSearchButtomImage();
-                        FileGet.getMac().setCurrSearchBlock(sb);
+                        FileGet.getSettingBlock().setCurrSearchBlock(sb);
 //                        searchInput.setText(sb.getSearchName());
                         break;
                     case ACCESSIBILITY:
                         Log.d("ACCESSIBILITY", "ACCESSIBILITY: ");
-                        FileGet.getMac().setCurrSearchBlock(sb);
+                        FileGet.getSettingBlock().setCurrSearchBlock(sb);
                         if (!MyAccessbilityService.isServiceCreated()){
                             Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
                           FileGet.getMac().startActivity(intent);
@@ -138,8 +138,9 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
                         break;
                     case ADD:
                         Log.d("ADD", "add: ");
+
 //                        add(new SearchBlock("Base",null,null,null, SearchType.ADD));
-                        FileGet.getMac().scaleCard();
+                        FileGet.getSettingBlock().scaleCard();
                         FileGet.getMac().foldSearchBlockCard2();
                         break;
                 }
@@ -149,10 +150,10 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
             });
             apkIcon.setOnLongClickListener(v -> {
                 Log.d("TAG", "My_ViewHolder: ");
-                FileGet.getMac().scaleCard();
+                FileGet.getSettingBlock().scaleCard();
                 FileGet.getMac().foldSearchBlockCard2();
-                FileGet.getMac().setCurrSearchBlock(sb);
-                FileGet.getMac().WriteSettingInput();
+                FileGet.getSettingBlock().setCurrSearchBlock(sb);
+                FileGet.getSettingBlock().WriteSettingInput(FileGet.getMacView());
 
                 return true;
             });
