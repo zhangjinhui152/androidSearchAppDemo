@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         search_recyclerViewAdapter = new Search_RecyclerViewAdapter(searchBlocks,this,My_AndroidUtil.getDbManger());
-
+        FileGet.getSettingBlock().set_Search_recyclerViewAdapter(search_recyclerViewAdapter);
 
 
         TextInputEditText searchInput = findViewById(R.id.search_input);
@@ -180,23 +181,28 @@ public class MainActivity extends AppCompatActivity {
         FileGet.setMac(this);
 
 
-        readSettingInput();
+//        readSettingInput();
 
-        findViewById(R.id.close_Bth).setOnClickListener(v->{
-            settingBlock.animate().setDuration(400).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
-                float factor = (float) 0.95;
-                float res = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
-                return  res;
-            }).start();
-        });
+//        findViewById(R.id.close_Bth).setOnClickListener(v->{
+//            settingBlock.animate().setDuration(400).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
+//                float factor = (float) 0.95;
+//                float res = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
+//                return  res;
+//            }).start();
+//        });
         setting = findViewById(R.id.settingSet);
-        Log.d("filesDir", "onCreate: "+setting);
+//        Log.d("filesDir", "onCreate: "+setting);
+//        FileGet.getMac().findViewById(R.id.close_Bth).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d("TAG", "onClick: ");
+//            }
+//        });
 
 
 
 
-
-    }
+}
 
     public void setPkgname(String pkgname) {
         MyAccessbilityService myAc = FileGet.getMyAc();
@@ -210,163 +216,179 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //读取/修改当前的块设置
-    public void WriteSettingInput()
-    {
-        TextInputEditText searchName = findViewById(R.id.SearchName);
-        TextInputEditText input_JsonStr = findViewById(R.id.input_JsonStr);
-        TextInputEditText input_urlScheme = findViewById(R.id.input_urlScheme);
-        TextInputEditText input_type = findViewById(R.id.type);
-
-        searchName.setText(currSearchBlock.getSearchName());
-        input_JsonStr.setText(currSearchBlock.getJsonStr());
-        input_urlScheme.setText(currSearchBlock.getUrlScheme());
-        SearchType oldType = currSearchBlock.getType();
-        if (oldType == SearchType.ACCESSIBILITY){
-            input_type.setText("A");
-        }
-        else if (oldType == SearchType.URL_SCHEME) {
-            input_type.setText("U");
-        }
-
-
-        findViewById(R.id.addSearchBlock).setOnClickListener(v->{
-            SearchType type = null;
-            SearchMethod searchMethod = null;
-
-            if (input_type.getText().toString().equals("U")){
-                type = SearchType.URL_SCHEME;
-                searchMethod = new SearchMethodForUrlScheme();
-            }
-            else if (input_type.getText().toString().equals("A")) {
-                type = SearchType.ACCESSIBILITY;
-                searchMethod = new SearchMethodForAccessibility();
-            }
-            SearchBlock searchBlock = new SearchBlock(searchName.getText().toString(),
-                    input_urlScheme.getText().toString(),
-                    input_JsonStr.getText().toString(),
-                    type
-            );
-            searchBlock.setSearchMethod(searchMethod);
-            if (FileGet.getBm() != null){
-                searchBlock.setApkIcon(My_AndroidUtil.bitmapToByte(FileGet.getBm()));
-
-            }
-            Log.d("FuckBug", "onCreate: "+input_JsonStr.getText().toString());
-
-            search_recyclerViewAdapter.remove(currSearchBlock);
-            search_recyclerViewAdapter.add(searchBlock);
-            scaleCard();
-        });
-        findViewById(R.id.remove_Bth).setOnClickListener(vd->{
-            search_recyclerViewAdapter.remove(currSearchBlock);
-            scaleCard();
-        });
-    }
-
-    public void readSettingInput() {
-        settingBlock = findViewById(R.id.settingBlock);
-
-        TextInputEditText searchName = findViewById(R.id.SearchName);
-        TextInputEditText input_JsonStr = findViewById(R.id.input_JsonStr);
-        TextInputEditText input_urlScheme = findViewById(R.id.input_urlScheme);
-        TextInputEditText input_type = findViewById(R.id.type);
-
-        ImageButton addSearchBlock = findViewById(R.id.addSearchBlock);
-
-        //读取输入框并构建一个SearchBlock 然后添加到search_recyclerViewAdapter里
-        addSearchBlock.setOnClickListener(v->{
-        try {
-            SearchType type = null;
-            SearchMethod searchMethod = null;
-
-            if (input_type.getText().toString().equals("U")){
-                type = SearchType.URL_SCHEME;
-                searchMethod = new SearchMethodForUrlScheme();
-            }
-            else if (input_type.getText().toString().equals("A")) {
-                type = SearchType.ACCESSIBILITY;
-                searchMethod = new SearchMethodForAccessibility();
-            }
-            SearchBlock searchBlock = new SearchBlock(searchName.getText().toString(),
-                    input_urlScheme.getText().toString(),
-                    input_JsonStr.getText().toString(),
-                    type
-            );
-            searchBlock.setSearchMethod(searchMethod);
-            if (FileGet.getBm() != null){
-                searchBlock.setApkIcon(My_AndroidUtil.bitmapToByte(FileGet.getBm()));
-
-            }
-
-            Log.d("FuckBug", "onCreate: "+input_JsonStr.getText().toString());
-            search_recyclerViewAdapter.add(searchBlock);
-            scaleCard();
-            findViewById(R.id.remove_Bth).setOnClickListener(vd->{
-//                search_recyclerViewAdapter.remove(currSearchBlock);
-            });
-        }
-        catch (Exception e){
-            Toast.makeText(MainActivity.this, "不能为空或者类型不对", Toast.LENGTH_LONG).show();
-        }
-
-
-
-
-
-
-        });
-        ImageButton setImageButtom = findViewById(R.id.setImageButtom);
-        //设置图片到当前的iamgebutton 传递给fileGet 在resultApi接受 设置给对应的按钮
-        setImageButtom.setOnClickListener(v->{
-            FileGet.setIb(setImageButtom);
-            FileGet.getFile();
-
-
-
-        });
-    }
+//    public void WriteSettingInput()
+//    {
+//        TextInputEditText searchName = findViewById(R.id.SearchName);
+//        TextInputEditText input_JsonStr = findViewById(R.id.input_JsonStr);
+//        TextInputEditText input_urlScheme = findViewById(R.id.input_urlScheme);
+//        TextInputEditText input_type = findViewById(R.id.type);
+//
+//        searchName.setText(currSearchBlock.getSearchName());
+//        input_JsonStr.setText(currSearchBlock.getJsonStr());
+//        input_urlScheme.setText(currSearchBlock.getUrlScheme());
+//        SearchType oldType = currSearchBlock.getType();
+//        if (oldType == SearchType.ACCESSIBILITY){
+//            input_type.setText("A");
+//        }
+//        else if (oldType == SearchType.URL_SCHEME) {
+//            input_type.setText("U");
+//        }
+//
+//
+//        findViewById(R.id.addSearchBlock).setOnClickListener(v->{
+//            SearchType type = null;
+//            SearchMethod searchMethod = null;
+//
+//            if (input_type.getText().toString().equals("U")){
+//                type = SearchType.URL_SCHEME;
+//                searchMethod = new SearchMethodForUrlScheme();
+//            }
+//            else if (input_type.getText().toString().equals("A")) {
+//                type = SearchType.ACCESSIBILITY;
+//                searchMethod = new SearchMethodForAccessibility();
+//            }
+//            SearchBlock searchBlock = new SearchBlock(searchName.getText().toString(),
+//                    input_urlScheme.getText().toString(),
+//                    input_JsonStr.getText().toString(),
+//                    type
+//            );
+//            searchBlock.setSearchMethod(searchMethod);
+//            if (FileGet.getBm() != null){
+//                searchBlock.setApkIcon(My_AndroidUtil.bitmapToByte(FileGet.getBm()));
+//
+//            }
+//            Log.d("FuckBug", "onCreate: "+input_JsonStr.getText().toString());
+//
+//            search_recyclerViewAdapter.remove(currSearchBlock);
+//            search_recyclerViewAdapter.add(searchBlock);
+//            scaleCard();
+//        });
+//        findViewById(R.id.remove_Bth).setOnClickListener(vd->{
+//            search_recyclerViewAdapter.remove(currSearchBlock);
+//            scaleCard();
+//        });
+//    }
+//
+//    public void readSettingInput() {
+//        settingBlock = findViewById(R.id.settingBlock);
+//
+//        TextInputEditText searchName = findViewById(R.id.SearchName);
+//        TextInputEditText input_JsonStr = findViewById(R.id.input_JsonStr);
+//        TextInputEditText input_urlScheme = findViewById(R.id.input_urlScheme);
+//        TextInputEditText input_type = findViewById(R.id.type);
+//
+//        ImageButton addSearchBlock = findViewById(R.id.addSearchBlock);
+//
+//        //读取输入框并构建一个SearchBlock 然后添加到search_recyclerViewAdapter里
+//        addSearchBlock.setOnClickListener(v->{
+//        try {
+//            SearchType type = null;
+//            SearchMethod searchMethod = null;
+//
+//            if (input_type.getText().toString().equals("U")){
+//                type = SearchType.URL_SCHEME;
+//                searchMethod = new SearchMethodForUrlScheme();
+//            }
+//            else if (input_type.getText().toString().equals("A")) {
+//                type = SearchType.ACCESSIBILITY;
+//                searchMethod = new SearchMethodForAccessibility();
+//            }
+//            SearchBlock searchBlock = new SearchBlock(searchName.getText().toString(),
+//                    input_urlScheme.getText().toString(),
+//                    input_JsonStr.getText().toString(),
+//                    type
+//            );
+//            searchBlock.setSearchMethod(searchMethod);
+//            if (FileGet.getBm() != null){
+//                searchBlock.setApkIcon(My_AndroidUtil.bitmapToByte(FileGet.getBm()));
+//
+//            }
+//
+//            Log.d("FuckBug", "onCreate: "+input_JsonStr.getText().toString());
+//            search_recyclerViewAdapter.add(searchBlock);
+//            scaleCard();
+//            findViewById(R.id.remove_Bth).setOnClickListener(vd->{
+////                search_recyclerViewAdapter.remove(currSearchBlock);
+//            });
+//        }
+//        catch (Exception e){
+//            Toast.makeText(MainActivity.this, "不能为空或者类型不对", Toast.LENGTH_LONG).show();
+//        }
+//
+//
+//
+//
+//
+//
+//        });
+//        ImageButton setImageButtom = findViewById(R.id.setImageButtom);
+//        //设置图片到当前的iamgebutton 传递给fileGet 在resultApi接受 设置给对应的按钮
+//        setImageButtom.setOnClickListener(v->{
+//            FileGet.setIb(setImageButtom);
+//            FileGet.getFile();
+//
+//
+//
+//        });
+//    }
 
     private void setSearchMethod(SerchMethodForBase serchMethodForBase) {
         searchMethod = serchMethodForBase;
     }
 
-    public void scaleCard(){
-
-        if (!flip){
-            settingBlock.animate().setDuration(800).scaleX(1).scaleY(1).setInterpolator((Interpolator) x -> {
-                float factor = (float) 0.4;
-                float v = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
-                return  v;
-            }).start();
-        }
-        else{
-            settingBlock.animate().setDuration(800).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
-                float factor = (float) 0.4;
-                float v = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
-                return  v;
-            }).start();
-        }
-        flip = !flip;
-
-
-    }
+//    public void scaleCard(){
+//
+//        if (!flip){
+//            settingBlock.animate().setDuration(800).scaleX(1).scaleY(1).setInterpolator((Interpolator) x -> {
+//                float factor = (float) 0.4;
+//                float v = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
+//                return  v;
+//            }).start();
+//        }
+//        else{
+//            settingBlock.animate().setDuration(800).scaleX(0).scaleY(0).setInterpolator((Interpolator) x -> {
+//                float factor = (float) 0.4;
+//                float v = (float) (pow(2, -10 * x) * sin((x - factor / 4) * (2 * 3.14) / factor) + 1);
+//                return  v;
+//            }).start();
+//        }
+//        flip = !flip;
+//
+//
+//    }
 
     private void listenInput(TextInputEditText searchInput) {
         Context context = this;
-        searchInput.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-                    Log.e("MainActivity", "onKey: 按下回车键");
-                    if(currSearchBlock != null && currSearchBlock.getSearchMethod() != null){
-                        currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-        });
+//        searchInput.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+//                    Log.e("MainActivity", "onKey: 按下回车键");
+//                    if(currSearchBlock != null && currSearchBlock.getSearchMethod() != null){
+//                        currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
+//                    }
+//
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//        searchInput.setOnEditorActionListener(new AppCompatEditText.OnEditorActionListener() {
+//            @Override
+//
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                /** 关于编辑器动作 输入法动作发送,输入法动作完成, */
+//                if (actionId == EditorInfo.IME_ACTION_SEND
+//                        || actionId == EditorInfo.IME_ACTION_DONE
+//                        || (event != null) && KeyEvent.KEYCODE_ENTER
+//                        == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction()) {
+//                    Log.w("error", "onEditorAction: 回车键");
+//                }
+//                //返回false以上的操作会执行两次，因为onEditorAction方法接受了false会表示尚未执行
+//                //修改 return true,则回车之响应一次
+//                return true ;
+//            }
+//        });
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -387,8 +409,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    Log.d("TAG", "onEditorAction: ");
-
+                    Log.w("TAG", "onEditorAction:回车键 ");
+                    if(currSearchBlock != null && currSearchBlock.getSearchMethod() != null){
+                        currSearchBlock.getSearchMethod().search(searchInput.getText().toString(),currSearchBlock.getUrlScheme(),context);
+                    }
                 }
                 return false;
             }

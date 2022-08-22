@@ -3,10 +3,12 @@ package com.example.tedy.util
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
+import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tedy.MainActivity
 import com.example.tedy.MyAccessbilityService
+import com.example.tedy.SettingBlock
 
 
 @SuppressLint("StaticFieldLeak")
@@ -18,6 +20,14 @@ object FileGet : AppCompatActivity() {
     @SuppressLint("StaticFieldLeak")
     @JvmStatic
     private var mainActive : MainActivity? = null
+
+    @SuppressLint("StaticFieldLeak")
+    @JvmStatic
+    var settingBlock : SettingBlock? = null
+
+    @SuppressLint("StaticFieldLeak")
+    @JvmStatic
+    var macView : View? = null
 
     @SuppressLint("StaticFieldLeak")
     @JvmStatic
