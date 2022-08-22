@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingBlock">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/settingBlock"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@color/design_default_color_background"
+            android:theme="@style/MY_CardView"
+            android:scaleX="0"
+            android:scaleY="0"
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="50dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/SearchName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="com.example.autoc1"
+                    android:hint="SearchName~" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/type"
+                    android:text="A"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="50dp"
+
+                    android:hint="type" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_JsonStr"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/jsonExample"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_urlScheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/burl"
+                    android:hint="urlScheme" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+
+                    <ImageButton
+                        android:id="@+id/setImageButtom"
+
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="50dp"
+                        android:background="@drawable/carame94"
+                        />
+                    <ImageButton
+
+                        android:id="@+id/addSearchBlock"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="50dp"
+                        android:background="@drawable/add"
+                        >
+
+
+                    </ImageButton>
+                    <Button
+                        android:id="@+id/close_Bth"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height=  "50dp"
+                        android:textAlignment="center"
+                        android:textSize="10dp"
+                        android:text="关闭"/>
+                    <Button
+                        android:id="@+id/remove_Bth"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height=  "50dp"
+                        android:textAlignment="center"
+                        android:textSize="10dp"
+                        android:text="删除"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </ScrollView>
+</FrameLayout>

@@ -2,5 +2,7 @@
     <string name="app_name">Tedy</string>
     <string name="burl">bilibili://search?keyword=%s</string>
     <string name="jsonExample">[{\"type\":\"Click\",\"x\":26,\"y\":26,\"id\":\"inp1\",\"editText\":\"\%s\",\"delay\":1000},{\"type\":\"IdNode\",\"x\":26,\"y\":26,\"id\":\"inp1\",\"editText\":\"\%s\",\"delay\":1000}]</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
