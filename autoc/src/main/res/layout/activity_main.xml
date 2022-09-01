@@ -19,17 +19,17 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="155dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="152dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/button"
+            android:layout_width="394dp"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:text="NOT"
-            android:textColorHint="#616161" />
+            android:layout_weight="1"
+            android:text="Button" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -51,5 +51,14 @@
             android:text="NOT"
             android:hint="hint" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="hint"
+        android:text="NOT"
+        android:textColorHint="#616161"
+        tools:layout_editor_absoluteX="-3dp"
+        tools:layout_editor_absoluteY="99dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
