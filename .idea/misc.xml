@@ -4,7 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.19784172661870503" />
-        <entry key="autoc/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="autoc/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="autoc/src/main/res/layout/activity_main2.xml" value="0.21770833333333334" />
         <entry key="autoc/src/main/res/xml/configurate.xml" value="0.17798913043478262" />
         <entry key="kotlinfram/src/main/res/layout/activity_main.xml" value="0.3484375" />
         <entry key="kotlinfram/src/main/res/layout/content_main.xml" value="0.3484375" />

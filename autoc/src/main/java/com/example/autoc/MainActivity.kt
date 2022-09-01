@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.widget.Button
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +32,12 @@ class MainActivity : AppCompatActivity() {
 //            startActivity(intent)
 //        }
 
-
+        val findViewById = findViewById<Button>(R.id.button)
+        findViewById.setOnClickListener{
+            val ic = Intent()
+            ic.setClass(this@MainActivity,MainActivity2::class.java)
+            startActivity(ic)
+        }
 
     }
 
