@@ -432,8 +432,10 @@ public class My_AndroidUtil {
             //BDToast.showToast(getText(R.string.app_not_found).toString());
             Toast.makeText(context.getApplicationContext(), "app_not_found", Toast.LENGTH_SHORT).show();
             return;
-        } else
-            Toast.makeText(context.getApplicationContext(), "open successfully", Toast.LENGTH_SHORT).show();
+        } else{
+//            Toast.makeText(context.getApplicationContext(), "open successfully", Toast.LENGTH_SHORT).show();
+        }
+
 
         Intent resolveIntent = context.getPackageManager().getLaunchIntentForPackage(packagename);// 这里的packname就是从上面得到的目标apk的包名
         context.startActivity(resolveIntent);// 启动目标应用

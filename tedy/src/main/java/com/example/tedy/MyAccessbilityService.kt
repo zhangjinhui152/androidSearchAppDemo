@@ -18,7 +18,7 @@ import java.util.*
 
 class MyAccessbilityService : AccessibilityService() {
 
-
+    var Oevent : AccessibilityEvent? = null
     companion object {
 
 
@@ -29,12 +29,15 @@ class MyAccessbilityService : AccessibilityService() {
         var isOpenActive = false
 
 
+
+
         var pkgName : String= "com.example.autoc"
 
 
         enum class Command_Type(val type : String) {
             Click("Click"),
             IdNode("IdNode"),
+            FindFocus("FindFocus")
         }
 
 
@@ -55,10 +58,16 @@ class MyAccessbilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+//
+//        val source: AccessibilityNodeInfo = event?.source ?: return
+//        val findFocus = source?.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+//        Log.d("findFocus", "onAccessibilityEvent:${findFocus?.text} ")
+
+
         Log.d("TAG", "event?.eventType: ${serviceInfo.packageNames[0]}")
         if (isOpenActive){
             isOpenActive = false
-
+            Oevent = event
         }
 
 
@@ -75,6 +84,11 @@ class MyAccessbilityService : AccessibilityService() {
     }
 
     fun JsonParseSelectNode(id : String,editText: String){
+
+
+
+
+
         var inputNode : AccessibilityNodeInfo? = null
         var nodeFlag  = false
 
@@ -144,6 +158,19 @@ class MyAccessbilityService : AccessibilityService() {
 
     }
 
+    fun ParseNode(){
 
+        for(ws in windows){
+            val root = ws.root
+            val target = root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+            if (target != null) {
+                Log.d("ParseNode", "inputHello: ${target.text}");
+            }
+
+        }
+
+
+
+    }
 
 }

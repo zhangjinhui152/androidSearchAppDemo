@@ -26,6 +26,7 @@ class SearchMethodForAccessibility : SearchMethod {
 
         MyAccessbilityService.pkgName = currSearchBlock?.searchName.toString()
         Log.d("search", "search: IS SearchMethodForAccessibility${currSearchBlock?.jsonStr.toString()}")
+        Log.d("search", "search: IS SearchMethodForAccessibility${currSearchBlock?.searchName.toString()}")
 
 
 
@@ -59,6 +60,15 @@ class SearchMethodForAccessibility : SearchMethod {
                             FileGet.getAc()?.onAccessibilityEvent(AccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT))
 
                             FileGet.getAc()?.callAccessibilityServiceCommand { FileGet.getAc()?.JsonParseSelectNode(it.id,it.editText) }
+
+                        }
+                        MyAccessbilityService.Companion.Command_Type.FindFocus.toString() -> {
+
+                            Log.d("TAG", "parserJson: it${it.type}")
+                            My_AndroidUtil.doStartApplicationWithPackageName(FileGet.getMac(), FileGet.getMac()?.currSearchBlock?.searchName);
+                            FileGet.getAc()?.onAccessibilityEvent(AccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT))
+
+                            FileGet.getAc()?.callAccessibilityServiceCommand { FileGet.getAc()?.ParseNode() }
 
                         }
                     }

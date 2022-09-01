@@ -155,6 +155,7 @@ class SettingBlock : Fragment() {
                     input_JsonStr?.text.toString(),
                     type
                 )
+                Log.e("SETTING", "readSettingInput${searchBlock.type}: ")
                 searchBlock.searchMethod = searchMethod
                 if (bm != null) {
                     searchBlock.apkIcon = My_AndroidUtil.bitmapToByte(bm)
@@ -162,7 +163,7 @@ class SettingBlock : Fragment() {
                 Log.d("FuckBug", "onCreate: " + input_JsonStr?.text.toString())
                 search_recyclerViewAdapter?.add(searchBlock)
                 scaleCardClose()
-                view.findViewById<View>(R.id.remove_Bth)?.setOnClickListener(View.OnClickListener { vd: View? -> })
+                view.findViewById<View>(R.id.remove_Bth)?.setOnClickListener {}
             } catch (e: Exception) {
 //                Toast.makeText(this@MainActivity, "不能为空或者类型不对", Toast.LENGTH_LONG).show()
             }

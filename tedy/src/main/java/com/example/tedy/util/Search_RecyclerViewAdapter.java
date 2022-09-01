@@ -109,6 +109,7 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
 
         public My_ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             apkIcon = itemView.findViewById(R.id.apkicon);
 
             apkIcon.setOnClickListener(v -> {
@@ -124,11 +125,14 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
                         Log.d("URL_SCHEME", "URL_SCHEME: ");
                         setSearchButtomImage();
                         FileGet.getSettingBlock().setCurrSearchBlock(sb);
+                        FileGet.getMac().setCurrSearchBlock(sb);
 //                        searchInput.setText(sb.getSearchName());
                         break;
                     case ACCESSIBILITY:
                         Log.d("ACCESSIBILITY", "ACCESSIBILITY: ");
                         FileGet.getSettingBlock().setCurrSearchBlock(sb);
+                        FileGet.getMac().setCurrSearchBlock(sb);
+
                         if (!MyAccessbilityService.isServiceCreated()){
                             Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
                           FileGet.getMac().startActivity(intent);
@@ -153,6 +157,7 @@ public class Search_RecyclerViewAdapter extends RecyclerView.Adapter<Search_Recy
                 FileGet.getSettingBlock().scaleCard();
                 FileGet.getMac().foldSearchBlockCard2();
                 FileGet.getSettingBlock().setCurrSearchBlock(sb);
+                Log.e("   apkIcon.setOnLongClickListener", "My_ViewHolder: "+sb.getSearchName());
                 FileGet.getSettingBlock().WriteSettingInput(FileGet.getMacView());
 
                 return true;
